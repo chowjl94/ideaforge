@@ -19,6 +19,7 @@ import {
 } from "lucide-react";
 
 import { useRouter } from "next/navigation";
+import { uploadtoS3 } from "@/lib/s3/s3";
 
 const FileUpload = () => {
 	const router = useRouter();
@@ -26,26 +27,7 @@ const FileUpload = () => {
 	const [uploading, setUploading] = useState(false);
 	const [isDragging, setIsDragging] = useState(false);
 	const [fileData, setFileData] = useState<File | null>(null);
-
 	const [formData, setFormData] = useState<FormData | null>(null);
-
-	// const mutation = useMutation({
-	// 	mutationFn: async ({
-	// 		file_key,
-	// 		file_name,
-	// 	}: {
-	// 		file_key: string;
-	// 		file_name: string;
-	// 	}) => {
-	// 		const response = await axios.post("/api/create-chat", {
-	// 			file_key,
-	// 			file_name,
-	// 		});
-	// 		return response.data;
-	// 	},
-	// });
-
-	// const { mutate, isError, error } = mutation;
 
 	const handleDragEnter = (e: { preventDefault: () => void }) => {
 		e.preventDefault();
@@ -68,20 +50,17 @@ const FileUpload = () => {
 		}
 	};
 
-	const handleFileUpload = (file: File) => {
-		setFileData(file);
-		console.log("Uploading file:", file);
-		const newFormData = new FormData();
-		newFormData.append("file", file);
-		setFormData(newFormData);
-		try {
-			console.log("Mutating the data");
-			console.log("This is completed");
-			// Simulate redirecting to the next page after 1 second
-			setTimeout(() => console.log("Redirecting to the next page"), 1000);
-			// router.push('/success-page');
-		} catch (error) {
-			console.error("Error uploading file:", error);
+	const handleFileUpload = async () => {
+		if (formData && fileData!.size < 15 * 1024 * 1024) {
+			try {
+				const data = await uploadtoS3(fileData!);
+				// router.push('/success-page');
+			} catch (error) {
+				alert("Error with uploading file");
+			}
+		} else {
+			alert("Pdf File size exceeds 15MB");
+			return;
 		}
 	};
 
@@ -94,8 +73,13 @@ const FileUpload = () => {
 		const files: any = Array.from(e.dataTransfer.files);
 		if (files.length > 0) {
 			const file = files[0];
-			if (file) {
-				handleFileUpload(file);
+			if (file && file.type === "application/pdf") {
+				setFileData(file);
+				const newFormData = new FormData();
+				newFormData.append("file", file);
+				setFormData(newFormData);
+			} else {
+				alert("Please select a PDF file.");
 			}
 		}
 	};
@@ -103,14 +87,19 @@ const FileUpload = () => {
 	const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		setIsDragging(false);
 		const file = e.target.files?.[0];
-		if (file) {
-			handleFileUpload(file);
+		if (file && file.type === "application/pdf") {
+			setFileData(file);
+			const newFormData = new FormData();
+			newFormData.append("file", file);
+			setFormData(newFormData);
+		} else {
+			alert("Please select a PDF file.");
 		}
 	};
 
 	const handleRevert = () => {
-		setFileData(null); // Reset fileData to null
-		setFormData(null); // Reset formData to null
+		setFileData(null);
+		setFormData(null);
 	};
 
 	return (
@@ -150,8 +139,11 @@ const FileUpload = () => {
 					>
 						<XCircle color="white" />
 					</ShadButton>
-					<ShadButton className="p-2 gap-1 flex flex-row">
-						Chat <ArrowRight />{" "}
+					<ShadButton
+						className="p-2 gap-1 flex flex-row"
+						onClick={handleFileUpload}
+					>
+						Chat <ArrowRight />
 					</ShadButton>
 				</div>
 			)}

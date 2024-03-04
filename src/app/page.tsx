@@ -10,11 +10,16 @@ export default async function Home() {
 	const isAuth = !!userId;
 	return (
 		<main className="min-h-screen w-screen bg-gradient-to-br from-sky-400 to-sky-200">
+			<div className="absolute p-4 top-0 right-0">
+				<UserButton afterSignOutUrl="/"></UserButton>
+			</div>
+
 			<div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 ">
 				<div className="flex flex-col items-center text-center">
 					<div className="flex items-center">
-						<h1 className="text-5xl font-semibold"> Learn from any pdf</h1>
-						<UserButton afterSignOutUrl="/"></UserButton>
+						<h1 className="text-5xl font-semibold pb-2">
+							Explore and learn from any PDF at your fingertips
+						</h1>
 					</div>
 					<div className="flex mt-2">
 						{isAuth && (
