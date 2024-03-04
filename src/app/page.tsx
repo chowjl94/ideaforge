@@ -1,4 +1,5 @@
 import { Button as ShadButton } from "@/components/ui/button";
+import FileUpload from "@/components/FileUpload";
 import { UserButton, auth } from "@clerk/nextjs";
 import { LogIn, History } from "lucide-react";
 
@@ -17,7 +18,7 @@ export default async function Home() {
 					</div>
 					<div className="flex mt-2">
 						{isAuth && (
-							<ShadButton className="p-2 gap-3 flex flex-row">
+							<ShadButton className="p-2 gap-1 flex flex-row">
 								<History />
 								History
 							</ShadButton>
@@ -28,7 +29,7 @@ export default async function Home() {
 					</p>
 					<div className="w-full mt-4">
 						{isAuth ? (
-							<h1>Upload your PDF</h1>
+							<FileUpload />
 						) : (
 							<Link href="/login">
 								<ShadButton>
