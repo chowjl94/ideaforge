@@ -1,6 +1,6 @@
 import { Button as ShadButton } from "@/components/ui/button";
 import { UserButton, auth } from "@clerk/nextjs";
-import { LogIn } from "lucide-react";
+import { LogIn, History } from "lucide-react";
 
 import Link from "next/link";
 
@@ -16,7 +16,12 @@ export default async function Home() {
 						<UserButton afterSignOutUrl="/"></UserButton>
 					</div>
 					<div className="flex mt-2">
-						{isAuth && <ShadButton>History</ShadButton>}
+						{isAuth && (
+							<ShadButton className="p-2 gap-3 flex flex-row">
+								<History />
+								History
+							</ShadButton>
+						)}
 					</div>
 					<p>
 						Learn more, learn faster about your documents with the help of AI
