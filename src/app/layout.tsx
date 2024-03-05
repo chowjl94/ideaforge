@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { IBM_Plex_Sans } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
 import { neobrutalism } from "@clerk/themes";
+import { Toaster } from "react-hot-toast";
+import Providers from "@/components/provider/Provider";
 
 import cn from "classnames";
 import "./globals.css";
@@ -29,11 +31,14 @@ export default function RootLayout({
 				signUp: { baseTheme: neobrutalism },
 			}}
 		>
-			<html lang="en">
-				<body className={cn("font-IBMPLEX antialiased", IBMPLEX.variable)}>
-					{children}
-				</body>
-			</html>
+			<Providers>
+				<html lang="en">
+					<body className={cn("font-IBMPLEX antialiased", IBMPLEX.variable)}>
+						<Toaster />
+						{children}
+					</body>
+				</html>
+			</Providers>
 		</ClerkProvider>
 	);
 }
