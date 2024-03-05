@@ -1,33 +1,19 @@
 "use client";
-
-import { useState, useRef } from "react";
 import axios from "axios";
-// import { toast } from "react-hot-toast";
+import { toast } from "react-hot-toast";
 import { useMutation } from "@tanstack/react-query";
-
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { useState, useRef } from "react";
 import { Button as ShadButton } from "@/components/ui/button";
-
-import {
-	Inbox,
-	Loader2,
-	XCircle,
-	Upload,
-	FileText,
-	FileCheck2,
-	ArrowRight,
-} from "lucide-react";
-
-import { useRouter } from "next/navigation";
-import { uploadtoS3 } from "@/lib/s3/s3";
+import { Inbox, XCircle, FileCheck2, ArrowRight, Loader2 } from "lucide-react";
+import { useFileUploadMutation } from "@/lib/hooks/useMutationHook";
 
 const FileUpload = () => {
-	const router = useRouter();
 	const fileInputRef = useRef<HTMLInputElement>(null);
-	const [uploading, setUploading] = useState(false);
 	const [isDragging, setIsDragging] = useState(false);
 	const [fileData, setFileData] = useState<File | null>(null);
 	const [formData, setFormData] = useState<FormData | null>(null);
+
+	const { handleFileUpload, uploading, isPending } = useFileUploadMutation();
 
 	const handleDragEnter = (e: { preventDefault: () => void }) => {
 		e.preventDefault();
@@ -50,20 +36,6 @@ const FileUpload = () => {
 		}
 	};
 
-	const handleFileUpload = async () => {
-		if (formData && fileData!.size < 15 * 1024 * 1024) {
-			try {
-				const data = await uploadtoS3(fileData!);
-				// router.push('/success-page');
-			} catch (error) {
-				alert("Error with uploading file");
-			}
-		} else {
-			alert("Pdf File size exceeds 15MB");
-			return;
-		}
-	};
-
 	const handleDrop = async (e: {
 		dataTransfer: any;
 		preventDefault: () => void;
@@ -79,7 +51,7 @@ const FileUpload = () => {
 				newFormData.append("file", file);
 				setFormData(newFormData);
 			} else {
-				alert("Please select a PDF file.");
+				toast.error("Please select a PDF file.");
 			}
 		}
 	};
@@ -93,7 +65,7 @@ const FileUpload = () => {
 			newFormData.append("file", file);
 			setFormData(newFormData);
 		} else {
-			alert("Please select a PDF file.");
+			toast.error("Please select a PDF file.");
 		}
 	};
 
@@ -120,8 +92,19 @@ const FileUpload = () => {
 			>
 				{fileData ? (
 					<>
-						<FileCheck2 className="h-10 w-10 text-blue-500" />
-						<p>{fileData.name}</p>
+						{!isPending && !uploading ? (
+							<>
+								<FileCheck2 className="h-10 w-10 text-blue-500" />
+								<p>{fileData.name}</p>
+							</>
+						) : (
+							<>
+								<Loader2 className="h-10 w-10 text-blue-500 animate-spin" />
+								<p className="mt-2 text-sm text-slate-400">
+									Spilling Tea to GPT...
+								</p>
+							</>
+						)}
 					</>
 				) : (
 					<>
@@ -141,7 +124,7 @@ const FileUpload = () => {
 					</ShadButton>
 					<ShadButton
 						className="p-2 gap-1 flex flex-row"
-						onClick={handleFileUpload}
+						onClick={() => handleFileUpload(formData!, fileData!)}
 					>
 						Chat <ArrowRight />
 					</ShadButton>
