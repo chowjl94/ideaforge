@@ -1,19 +1,23 @@
 import AWS from "aws-sdk";
 
+export const initialiseS3 = () => {
+	AWS.config.update({
+		region: "ap-southeast-1",
+		accessKeyId: process.env.NEXT_PUBLIC_S3_ACCESS_KEY,
+		secretAccessKey: process.env.NEXT_PUBLIC_S3_SECRET_KEY,
+	});
+	const s3 = new AWS.S3({
+		params: {
+			Bucket: process.env.NEXT_PUBLIC_S3_BUCKET_NAME,
+		},
+		region: process.env.NEXT_PUBLIC_S3_REGION,
+	});
+	return s3;
+};
+
 export const uploadtoS3 = async (file: File) => {
 	try {
-		AWS.config.update({
-			region: "ap-southeast-1",
-			accessKeyId: process.env.NEXT_PUBLIC_S3_ACCESS_KEY,
-			secretAccessKey: process.env.NEXT_PUBLIC_S3_SECRET_KEY,
-		});
-		const s3 = new AWS.S3({
-			params: {
-				Bucket: process.env.NEXT_PUBLIC_S3_BUCKET_NAME,
-			},
-			region: process.env.NEXT_PUBLIC_S3_REGION,
-		});
-
+		const s3 = initialiseS3();
 		const file_key =
 			"uploads/" + Date.now().toString() + file.name.replace(" ", "-");
 
@@ -46,7 +50,7 @@ export const uploadtoS3 = async (file: File) => {
 	}
 };
 
-export function getS3Url(file_key: string) {
+export const getS3Url = (file_key: string) => {
 	const url = `https://${process.env.NEXT_PUBLIC_S3_BUCKET_NAME}.s3.${process.env.NEXT_PUBLIC_S3_REGION}.amazonaws.com/${file_key}`;
 	return url;
-}
+};
