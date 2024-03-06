@@ -48,3 +48,11 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 - Extract the most similar vector meta data
 
 - Feed metadata into Openai
+
+## PineconeDB
+
+- index is like the DB
+- in each index there are namespaces
+- in each namespeace there are vectors spaces
+- index(DB) => namespace(table) => vector(rows)
+- each pdf will have its own name space
