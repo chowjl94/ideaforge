@@ -1,3 +1,5 @@
+import { RecordMetadataValue } from "@pinecone-database/pinecone/dist/data/types";
+
 export interface ChatCreationRequest {
 	file_key: string;
 	file_name: string;
@@ -8,7 +10,7 @@ export interface UploadResponse {
 	status: Number;
 }
 
-interface PDFMetadata {
+export interface PDFMetadata {
 	version: string;
 	info: {
 		PDFFormatVersion: string;
@@ -19,13 +21,14 @@ interface PDFMetadata {
 		Producer: string;
 		CreationDate: string;
 	};
-	metadata: any; // You might want to specify a more specific type if possible
+	metadata?: any; // You might want to specify a more specific type if possible
 	totalPages: number;
 }
 
-export interface PDFContent {
+export interface PDFDocument {
 	pageContent: string;
 	metadata: {
+		text: RecordMetadataValue;
 		source: string;
 		pdf: PDFMetadata;
 		loc: {
