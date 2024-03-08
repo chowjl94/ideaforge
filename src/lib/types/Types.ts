@@ -8,6 +8,7 @@ export interface ChatCreationRequest {
 export interface UploadResponse {
 	message: string;
 	status: Number;
+	chat_id: string;
 }
 
 export interface PDFMetadata {
@@ -35,6 +36,15 @@ export interface PDFDocument {
 			pageNumber: number;
 		};
 	};
+}
+
+export interface NeonChats {
+	userId: string;
+	fileName: string;
+	fileUrl: string;
+	fileKey: string; // Include fileKey property
+	id?: number;
+	createdAt?: Date;
 }
 
 // sampel api repsone

@@ -35,8 +35,7 @@ export const useFileUploadMutation = () => {
 				mutate(data!, {
 					onSuccess: (data) => {
 						toast.success(data.message);
-						console.log("Uploaded to S3");
-						// router.push('/success-page');
+						router.push(`/chat/${data.chat_id}`);
 					},
 					onError: (err) => {
 						toast.error(err.message);
