@@ -1,5 +1,5 @@
 import { Button as ShadButton } from "@/components/ui/button";
-import FileUpload from "@/components/FileUpload";
+import FileUpload from "@/components/home/FileUpload";
 import { UserButton, auth } from "@clerk/nextjs";
 import { LogIn, History } from "lucide-react";
 

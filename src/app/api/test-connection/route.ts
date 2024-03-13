@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { db } from "@/db/index";
+import { db } from "@/db/neonDB";
 import { chats } from "@/db/schema";
 import { NeonChats } from "@/lib/types/Types";
 

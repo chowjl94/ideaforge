@@ -47,6 +47,22 @@ export interface NeonChats {
 	createdAt?: Date;
 }
 
+export interface ChatsTableConfig {
+	id: number;
+	fileName: string;
+	fileUrl: string;
+	fileKey: string;
+	createdAt: Date;
+	userId: string;
+}
+
+export interface MessagesTableConfig {
+	id: number;
+	chatId: number;
+	chatContent: string;
+	createdAt: Date;
+	role: string; // Assuming roleEnum returns string type
+}
 // sampel api repsone
 // {
 //     "message": "Success",

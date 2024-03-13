@@ -1,12 +1,15 @@
 import { loadS3IntoPinecone } from "@/pineconeDB";
 import { NextResponse } from "next/server";
-import { db } from "@/db/index";
+import { db } from "@/db/neonDB";
 import { chats } from "@/db/schema";
 import { auth } from "@clerk/nextjs";
 import { getS3Url } from "@/lib/s3/s3";
 import { NeonChats } from "@/lib/types/Types";
 import { Pinecone } from "@pinecone-database/pinecone";
 
+// sending to pinecone throuhg the endpoint api/create-chat
+// in pinecone a namespace is created for each set of vectors
+// then inserts a record into neonDB
 export async function POST(req: Request, res: Response) {
 	const { userId } = await auth();
 	if (!userId) {
@@ -22,7 +25,6 @@ export async function POST(req: Request, res: Response) {
 				apiKey: process.env.NEXT_PINECONE_API_KEY!,
 			})
 		);
-		console.log(file_key);
 		console.log("sending to NeonDB");
 		const values = {
 			fileName: file_name,
@@ -30,6 +32,8 @@ export async function POST(req: Request, res: Response) {
 			fileKey: file_key,
 			userId: userId,
 		};
+		// insert the chat record into neon
+		// for look up in the pinecone index and namespace
 		const chat_id = await db
 			.insert(chats)
 			.values(values as unknown as NeonChats)
