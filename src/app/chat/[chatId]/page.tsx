@@ -1,5 +1,3 @@
-import React from "react";
-
 type Props = {
 	params: {
 		chatId: string;
@@ -7,7 +5,7 @@ type Props = {
 };
 
 const ChatPage = ({ params: { chatId } }: Props) => {
-	return <div>{chatId}</div>;
+	return <div>this is chat {chatId}</div>;
 };
 
 export default ChatPage;

@@ -18,9 +18,19 @@ export const initialiseS3 = () => {
 export const uploadtoS3 = async (file: File) => {
 	try {
 		const s3 = initialiseS3();
+		console.log();
 		const file_key =
-			"uploads/" + Date.now().toString() + file.name.replace(" ", "-");
-
+			"uploads" +
+			Date.now().toString() +
+			"_" +
+			file.name.replace(" ", "_").replace("-", "_");
+		console.log(file.name);
+		const isPrintableASCII = (string: string) => /^[\x20-\x7F]*$/.test(string);
+		if (!isPrintableASCII(file_key)) {
+			throw new Error(
+				`${file_key} is not ascii-printable, pinecone will not accept`
+			);
+		}
 		const params = {
 			Bucket: process.env.NEXT_PUBLIC_S3_BUCKET_NAME!,
 			Key: file_key,
@@ -38,7 +48,7 @@ export const uploadtoS3 = async (file: File) => {
 			.promise();
 
 		await upload.then((data) => {
-			console.log("successfully uploaded to S3", file_key);
+			console.log("successfully uploaded to S3", `filekey:${file_key}`);
 		});
 
 		return Promise.resolve({
@@ -46,7 +56,7 @@ export const uploadtoS3 = async (file: File) => {
 			file_name: file.name,
 		});
 	} catch (error) {
-		console.log("this");
+		console.log("error");
 	}
 };
 

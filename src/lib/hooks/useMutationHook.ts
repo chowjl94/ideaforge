@@ -24,6 +24,11 @@ export const useFileUploadMutation = () => {
 		},
 	});
 
+	// sends file to S3,
+	// mutates the data by
+	// sending to pinecone throuhg the endpoint api/create-chat
+	// in pinecone a namespace is created for each set of vectors
+	// then inserts a record into neonDB
 	const handleFileUpload = async (formData: FormData, fileData: File) => {
 		if (formData && fileData!.size < 15 * 1024 * 1024) {
 			try {

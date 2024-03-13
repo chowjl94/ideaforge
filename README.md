@@ -37,11 +37,21 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 
 ## Overview
 
-- Upload pdf
-- Splits pdf to smaller chunks
-- Vectorise the chunks
-- embed the vectors with its metadata
-- Store embedded vectors to pineconeDB
+- Upload pdf to aws S3 , using aws-sdk
+- send S3 data into pine cone using /create-chat
+
+### Passing into PineconeDB
+
+- take fileKey from s3 load the PDF (loadS3IntoPinecone)
+- Splits pdf to smaller chunks (loadS3IntoPinecone)
+- Vectorise the chunks (loadS3IntoPinecone)
+- embed the vectors with its metadata (loadS3IntoPinecone)
+- Store embedded vectors to pineconeDB (loadS3IntoPinecone)
+
+### Generate an entry in NeonDB to store
+
+- insert a chat entry for chat table
+- each chat entry is a table which will be used later to store a conversation content as an entry in a message table
 
 - Generate a query which will be vectorised
 - Query PineconeDB and compare vectors in DB with query vector
