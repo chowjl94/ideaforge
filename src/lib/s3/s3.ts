@@ -20,11 +20,11 @@ export const uploadtoS3 = async (file: File) => {
 		const s3 = initialiseS3();
 		console.log();
 		const file_key =
-			"uploads" +
+			"uploads/" +
 			Date.now().toString() +
 			"_" +
 			file.name.replace(" ", "_").replace("-", "_");
-		console.log(file.name);
+		console.log(file.name, " this is in upload to s3 function");
 		const isPrintableASCII = (string: string) => /^[\x20-\x7F]*$/.test(string);
 		if (!isPrintableASCII(file_key)) {
 			throw new Error(

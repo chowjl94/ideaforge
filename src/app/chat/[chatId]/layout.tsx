@@ -4,8 +4,8 @@ const ChatLayout = ({
 	children: React.ReactNode;
 }>) => {
 	return (
-		<div className="flex max-h-screen overflow-scroll:hidden">
-			<div className="flex w-full max-h-screen overflow-scroll:hidden">
+		<div className="flex h-full max-h-screen overflow-scroll:hidden">
+			<div className="flex h-full w-full max-h-screen overflow-scroll:hidden">
 				<>{children}</>
 			</div>
 		</div>

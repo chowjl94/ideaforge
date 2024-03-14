@@ -1,5 +1,5 @@
+import { chats } from "@/db/schema";
 import { RecordMetadataValue } from "@pinecone-database/pinecone/dist/data/types";
-
 export interface ChatCreationRequest {
 	file_key: string;
 	file_name: string;
@@ -63,6 +63,8 @@ export interface MessagesTableConfig {
 	createdAt: Date;
 	role: string; // Assuming roleEnum returns string type
 }
+
+export type DrizzleChat = typeof chats.$inferSelect;
 // sampel api repsone
 // {
 //     "message": "Success",

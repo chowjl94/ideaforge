@@ -12,8 +12,6 @@ type Props = {
 };
 
 const ChatPage = async ({ params: { chatId } }: Props) => {
-	// const { userId } = await auth();
-	// const _chats = await db.select().from(chats).where(eq(chats.userId, userId));
 	const { userId } = await auth();
 	const _chats = await db.select().from(chats).where(eq(chats.userId, userId!));
 	const [isAuthenticated, hasChats, requestedChatExists] = await Promise.all([
@@ -25,17 +23,15 @@ const ChatPage = async ({ params: { chatId } }: Props) => {
 	if (!isAuthenticated || !hasChats || !requestedChatExists) {
 		return redirect(!isAuthenticated ? "/signup" : "/");
 	}
-
+	const currentChat = _chats.find((chat) => chat.id === parseInt(chatId));
 	return (
 		<>
-			<div className="flex-[1] max-w-xs">
-				<Sidebar />
-				{/* <ChatSideBar chats={_chats} chatId={parseInt(chatId)} isPro={isPro} /> */}
+			<div className="flex-[1] max-w-xs h-full">
+				<Sidebar chats={_chats} chatId={chatId} isPro={true} />
 			</div>
 			{/* pdf viewer */}
 			<div className="max-h-screen p-4 oveflow-scroll flex-[5]">
-				{/* <PDFViewer pdf_url={currentChat?.pdfUrl || ""} /> */}
-				<PDFViewer />
+				<PDFViewer pdf_url={currentChat?.fileUrl || ""} />
 			</div>
 			{/* chat component */}
 			<div className="flex-[3] border-l-4 border-l-slate-200">
