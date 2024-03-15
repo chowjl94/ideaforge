@@ -3,7 +3,7 @@ import { chats } from "@/db/schema";
 import { auth } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 import { eq } from "drizzle-orm";
-import { Chatbar, PDFViewer, Sidebar } from "@/components/chat";
+import { Chat, PDFViewer, Sidebar } from "@/components/chat";
 
 type Props = {
 	params: {
@@ -29,14 +29,11 @@ const ChatPage = async ({ params: { chatId } }: Props) => {
 			<div className="flex-[1] max-w-xs h-full">
 				<Sidebar chats={_chats} chatId={chatId} isPro={true} />
 			</div>
-			{/* pdf viewer */}
 			<div className="max-h-screen p-4 oveflow-scroll flex-[5]">
 				<PDFViewer pdf_url={currentChat?.fileUrl || ""} />
 			</div>
-			{/* chat component */}
-			<div className="flex-[3] border-l-4 border-l-slate-200">
-				{/* <ChatComponent chatId={parseInt(chatId)} /> */}
-				<Chatbar />
+			<div className="flex-[3] border-l-4 border-l-slate-200 h-100vh">
+				<Chat chatId={parseInt(chatId)} />
 			</div>
 		</>
 	);

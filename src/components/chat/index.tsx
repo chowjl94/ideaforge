@@ -1,5 +1,5 @@
-import Chatbar from "./Chatbar";
-import PDFViewer from "./PDFViewer";
-import Sidebar from "./Sidebar";
+import Chat from "./ChatColumn";
+import PDFViewer from "./PDFViewer/PDFViewer";
+import Sidebar from "./Sidebar/Sidebar";
 
-export { Chatbar, PDFViewer, Sidebar };
+export { Chat, PDFViewer, Sidebar };
