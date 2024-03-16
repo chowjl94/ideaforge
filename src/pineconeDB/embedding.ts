@@ -13,7 +13,7 @@ const config = new Configuration({
 
 const openai = new OpenAIApi(config);
 
-const getEmbeddings = async (text: string) => {
+export const getEmbeddings = async (text: string) => {
 	try {
 		const response = await openai.createEmbedding({
 			model: "text-embedding-ada-002",
@@ -64,7 +64,7 @@ export async function chunkifyPage(page: PDFDocument) {
 			metadata: {
 				// finding the page number
 				pageNumber: metadata.loc.pageNumber,
-				// tex of the pageContent that will be converted to bytes
+				// text of the pageContent that will be converted to bytes
 				text: contentStringByBytes(pageContent, 36000),
 			},
 		}),

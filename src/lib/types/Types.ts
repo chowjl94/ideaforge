@@ -1,5 +1,10 @@
-import { chats } from "@/db/schema";
-import { RecordMetadataValue } from "@pinecone-database/pinecone/dist/data/types";
+import { chats, messages } from "@/db/schema";
+import { Pinecone, ScoredPineconeRecord } from "@pinecone-database/pinecone";
+import {
+	RecordMetadata,
+	RecordMetadataValue,
+} from "@pinecone-database/pinecone/dist/data/types";
+
 export interface ChatCreationRequest {
 	file_key: string;
 	file_name: string;
@@ -22,7 +27,10 @@ export interface PDFMetadata {
 		Producer: string;
 		CreationDate: string;
 	};
-	metadata?: any; // You might want to specify a more specific type if possible
+	metadata?: {
+		text: string;
+		pageNumber: number;
+	};
 	totalPages: number;
 }
 
@@ -65,6 +73,13 @@ export interface MessagesTableConfig {
 }
 
 export type DrizzleChat = typeof chats.$inferSelect;
+export type DrizzleMessage = typeof messages.$inferSelect;
+
+export interface ClosesEmbeddingInterface {
+	(embeddings: number[], filekey: string, pinecone: Pinecone): Promise<
+		ScoredPineconeRecord<RecordMetadata>[]
+	>;
+}
 // sampel api repsone
 // {
 //     "message": "Success",
