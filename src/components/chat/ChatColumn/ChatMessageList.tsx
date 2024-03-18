@@ -3,21 +3,20 @@ import { Message } from "ai/react";
 import { Loader2 } from "lucide-react";
 import React from "react";
 
+type DrizzleMessage = {
+	id: number;
+	createdAt: Date;
+	chatId: number;
+	chatContent: string;
+	role: "system" | "user";
+};
+
 type Props = {
 	isLoading: boolean;
 	messages: Message[];
 };
 
 const ChatMessageList = ({ messages, isLoading }: Props) => {
-	// const testBoj = [
-	// 	{ content: "test1", role: "user", id: 1 },
-	// 	{ content: "test", role: "assistant", id: 2 },
-	// 	{ content: "test2", role: "user", id: 3 },
-	// 	{ content: "test", role: "assistant", id: 4 },
-	// 	{ content: "test3", role: "user", id: 5 },
-	// 	{ content: "test", role: "assistant", id: 6 },
-	// ];
-	console.log(messages);
 	if (isLoading) {
 		return (
 			<div className="flex justify-center items-center">
@@ -35,10 +34,17 @@ const ChatMessageList = ({ messages, isLoading }: Props) => {
 	return (
 		<div className="flex flex-col gap-2 px-4 h-full">
 			{messages.map((message) => {
+				const drizzleMessage =
+					"chatContent" in message
+						? (message as unknown as DrizzleMessage)
+						: null;
+				const normalMessage =
+					"content" in message ? (message as Message) : null;
+
 				return (
 					<div
 						key={message.id}
-						className={cn("flex", {
+						className={cn("flex pb-5", {
 							"justify-end pl-10": message.role === "user",
 							"justify-start pr-10": message.role === "assistant",
 						})}
@@ -51,7 +57,13 @@ const ChatMessageList = ({ messages, isLoading }: Props) => {
 								}
 							)}
 						>
-							<p>{message.content}</p>
+							<p>
+								{drizzleMessage
+									? drizzleMessage.chatContent
+									: normalMessage
+									? normalMessage.content
+									: ""}
+							</p>
 						</div>
 					</div>
 				);

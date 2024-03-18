@@ -112,3 +112,11 @@ export interface ClosesEmbeddingInterface {
 //         ]
 //     ]
 // }
+// const testBoj = [
+// 	{ content: "test1", role: "user", id: 1 },
+// 	{ content: "test", role: "assistant", id: 2 },
+// 	{ content: "test2", role: "user", id: 3 },
+// 	{ content: "test", role: "assistant", id: 4 },
+// 	{ content: "test3", role: "user", id: 5 },
+// 	{ content: "test", role: "assistant", id: 6 },
+// ];
