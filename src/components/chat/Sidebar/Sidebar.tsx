@@ -14,8 +14,6 @@ type Props = {
 };
 
 const Sidebar = ({ chats, chatId, isPro }: Props) => {
-	const [loading, setLoading] = useState(false);
-
 	return (
 		<div className="w-full min-h-screen p-4 text-gray-200 bg-gray-900">
 			<Link href="/">
@@ -42,11 +40,7 @@ const Sidebar = ({ chats, chatId, isPro }: Props) => {
 				))}
 			</div>
 			<div className="absolute bottom-4 left-4">
-				<SubscriptionButton
-					isPro={false}
-					loading={loading}
-					setLoading={setLoading}
-				/>
+				<SubscriptionButton isPro={isPro} />
 			</div>
 		</div>
 	);

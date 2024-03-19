@@ -1,19 +1,16 @@
-import { Button as ShadButton } from "@/components/ui/button";
-import FileUpload from "@/components/home/FileUpload";
+import Link from "next/link";
 import { UserButton, auth } from "@clerk/nextjs";
 import { LogIn, History } from "lucide-react";
-
-import Link from "next/link";
-import { useRouter } from "next/router";
+import { checkSubscription, getFirstChat } from "@/db/utils";
+import FileUpload from "@/components/home/FileUpload";
+import SubscriptionButton from "@/components/home/SubscriptionButtion";
+import { Button as ShadButton } from "@/components/ui/button";
 
 export default async function Home() {
 	const { userId } = await auth();
 	const isAuth = !!userId;
-	// const router = useRouter();
-
-	// const handleClick = () => {
-	// 	router.push(`/chats`);
-	// };
+	const isPro = await checkSubscription();
+	const firstChat = await getFirstChat(userId!);
 
 	return (
 		<main className="min-h-screen w-screen bg-gradient-to-br from-sky-400 to-sky-200">
@@ -29,15 +26,15 @@ export default async function Home() {
 						</h1>
 					</div>
 					<div className="flex mt-2">
-						{isAuth && (
-							<ShadButton
-								className="p-2 gap-1 flex flex-row"
-								// onClick={handleClick}
-							>
-								<History />
-								History
-							</ShadButton>
+						{isAuth && firstChat && (
+							<Link href={`/chat/${firstChat.id}`}>
+								<ShadButton className="p-2 gap-1 flex flex-row">
+									<History />
+									History
+								</ShadButton>
+							</Link>
 						)}
+						<SubscriptionButton isPro={isPro} />
 					</div>
 					<p>
 						Learn more, learn faster about your documents with the help of AI

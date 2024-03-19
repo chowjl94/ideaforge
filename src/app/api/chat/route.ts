@@ -7,7 +7,6 @@ import { createOAIprompt } from "@/lib/utils";
 import { feedPDFContext } from "@/pineconeDB/context";
 import { OpenAIStream, StreamingTextResponse, Message } from "ai";
 import { chats as chatSchema, messages as messageSchema } from "@/db/schema";
-// import { DrizzleMessage } from "@/lib/types/Types";
 
 const openai = new OpenAI({
 	apiKey: process.env.NEXT_OPEN_AI_API_KEY,

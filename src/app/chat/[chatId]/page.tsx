@@ -4,6 +4,7 @@ import { auth } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 import { eq } from "drizzle-orm";
 import { Chat, PDFViewer, Sidebar } from "@/components/chat";
+import { checkSubscription } from "@/db/utils";
 
 type Props = {
 	params: {
@@ -19,6 +20,7 @@ const ChatPage = async ({ params: { chatId } }: Props) => {
 		_chats && _chats.length > 0,
 		_chats.some((chat) => chat.id === parseInt(chatId)),
 	]);
+	const isPro = await checkSubscription();
 
 	if (!isAuthenticated || !hasChats || !requestedChatExists) {
 		return redirect(!isAuthenticated ? "/signup" : "/");
@@ -27,7 +29,7 @@ const ChatPage = async ({ params: { chatId } }: Props) => {
 	return (
 		<>
 			<div className="flex-[1] max-w-xs h-full">
-				<Sidebar chats={_chats} chatId={chatId} isPro={true} />
+				<Sidebar chats={_chats} chatId={chatId} isPro={isPro} />
 			</div>
 			<div className="max-h-screen p-4 oveflow-scroll flex-[5]">
 				<PDFViewer pdf_url={currentChat?.fileUrl || ""} />

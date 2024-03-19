@@ -1,15 +1,15 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import axios from "axios";
 
 type Props = {
 	isPro: boolean;
-	loading: boolean;
-	setLoading: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-const SubscriptionButton = ({ isPro, loading, setLoading }: Props) => {
+const SubscriptionButton = ({ isPro }: Props) => {
+	const [loading, setLoading] = useState(false);
+
 	const handleSubscription = async () => {
 		try {
 			setLoading(true);
