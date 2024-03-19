@@ -7,14 +7,14 @@ import { NextResponse } from "next/server";
 
 const return_url = process.env.NEXT_BASE_URL + "/";
 
-export const GET = async (req: Request) => {
+export const GET = async () => {
 	try {
 		const { userId } = await auth();
 		const user = await currentUser();
 		if (!userId) {
 			return new NextResponse("unauthorised", { status: 401 });
 		}
-		// getting the usersubscription detail of userI
+		// getting the usersubscription detail of userId
 		const _userSubscriptions = await db
 			.select()
 			.from(user_subscriptions)

@@ -1,21 +1,29 @@
 import Link from "next/link";
 import { UserButton, auth } from "@clerk/nextjs";
-import { LogIn, History } from "lucide-react";
+import { LogIn, History, Gem, Lightbulb } from "lucide-react";
 import { checkSubscription, getFirstChat } from "@/db/utils";
 import FileUpload from "@/components/home/FileUpload";
 import SubscriptionButton from "@/components/home/SubscriptionButtion";
 import { Button as ShadButton } from "@/components/ui/button";
+import Tooltip from "@/components/ui/tooltip";
 
 export default async function Home() {
 	const { userId } = await auth();
 	const isAuth = !!userId;
 	const isPro = await checkSubscription();
 	const firstChat = await getFirstChat(userId!);
-
+	const tooltipMessage = isPro ? "Pro" : "Basic";
 	return (
 		<main className="min-h-screen w-screen bg-gradient-to-br from-sky-400 to-sky-200">
 			<div className="absolute p-4 top-0 right-0">
-				<UserButton afterSignOutUrl="/"></UserButton>
+				<div className="flex flex-row gap-10">
+					{isAuth && (
+						<Tooltip message={tooltipMessage}>
+							<div className="pt-1">{isPro ? <Gem /> : <Lightbulb />}</div>
+						</Tooltip>
+					)}
+					<UserButton afterSignOutUrl="/"></UserButton>
+				</div>
 			</div>
 
 			<div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 ">
