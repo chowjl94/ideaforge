@@ -4,10 +4,17 @@ import { UserButton, auth } from "@clerk/nextjs";
 import { LogIn, History } from "lucide-react";
 
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 export default async function Home() {
 	const { userId } = await auth();
 	const isAuth = !!userId;
+	// const router = useRouter();
+
+	// const handleClick = () => {
+	// 	router.push(`/chats`);
+	// };
+
 	return (
 		<main className="min-h-screen w-screen bg-gradient-to-br from-sky-400 to-sky-200">
 			<div className="absolute p-4 top-0 right-0">
@@ -23,7 +30,10 @@ export default async function Home() {
 					</div>
 					<div className="flex mt-2">
 						{isAuth && (
-							<ShadButton className="p-2 gap-1 flex flex-row">
+							<ShadButton
+								className="p-2 gap-1 flex flex-row"
+								// onClick={handleClick}
+							>
 								<History />
 								History
 							</ShadButton>

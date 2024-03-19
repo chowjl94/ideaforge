@@ -5,6 +5,7 @@ import { MessageCircle, PlusCircle } from "lucide-react";
 import { DrizzleChat } from "@/lib/types/Types";
 import { Button as ShadButton } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import SubscriptionButton from "@/components/home/SubscriptionButtion";
 
 type Props = {
 	chats: DrizzleChat[];
@@ -39,6 +40,13 @@ const Sidebar = ({ chats, chatId, isPro }: Props) => {
 						</div>
 					</Link>
 				))}
+			</div>
+			<div className="absolute bottom-4 left-4">
+				<SubscriptionButton
+					isPro={false}
+					loading={loading}
+					setLoading={setLoading}
+				/>
 			</div>
 		</div>
 	);
