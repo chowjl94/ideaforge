@@ -7,10 +7,10 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export function convertToAscii(inputString: string): string {
-	let pattern = /^[\x20-\x7F]*$/; // Default: Remove non-printable ASCII
-
+	let pattern = /[^ -~]/g; // Default: Remove non-printable ASCII
 	const regex = new RegExp(pattern, "g");
 	const asciiString = inputString.replace(regex, "");
+	console.log(asciiString);
 	return asciiString;
 }
 
