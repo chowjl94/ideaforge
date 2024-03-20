@@ -19,6 +19,7 @@ export async function POST(req: Request, res: Response) {
 		const pinecone = new Pinecone({
 			apiKey: process.env.NEXT_PINECONE_API_KEY!,
 		});
+
 		const { messages, chatId } = await req.json();
 		const lastMessage = messages[messages.length - 1];
 		const _chats = await db
