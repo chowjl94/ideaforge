@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React from "react";
 import Link from "next/link";
 import { Gem, Lightbulb, MessageCircle, PlusCircle } from "lucide-react";
 import { DrizzleChat } from "@/lib/types/Types";
@@ -25,7 +25,7 @@ type Props = {
 	isPro: boolean;
 };
 
-const Sidebar = ({ chats, chatId, currentChat, isPro }: Props) => {
+const Sidebar = ({ chats, chatId, isPro }: Props) => {
 	const tooltipMessage = isPro ? "Pro" : "Basic";
 
 	return (
@@ -62,7 +62,7 @@ const Sidebar = ({ chats, chatId, currentChat, isPro }: Props) => {
 			<div className="grid grid-flow-col justify-between">
 				<SubscriptionButton isPro={isPro} />
 				<div className="flex flex-row gap-2 px-2 pt-1 bg-white rounded-md">
-					<Tooltip message={tooltipMessage}>
+					<Tooltip message={tooltipMessage} position={"bottom-10"}>
 						<div className="pt-1">
 							{isPro ? <Gem /> : <Lightbulb color="black" />}
 						</div>
