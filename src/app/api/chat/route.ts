@@ -6,15 +6,19 @@ import { NextResponse } from "next/server";
 import { createOAIprompt } from "@/lib/utils";
 import { feedPDFContext } from "@/pineconeDB/context";
 import { OpenAIStream, StreamingTextResponse, Message } from "ai";
+import { Configuration, OpenAIApi } from "openai-edge";
+
 import { chats as chatSchema, messages as messageSchema } from "@/db/schema";
 
-const openai = new OpenAI({
+const openaiConfig = new Configuration({
 	apiKey: process.env.NEXT_OPEN_AI_API_KEY,
 });
 
+const openai = new OpenAIApi(openaiConfig);
+
 export const runtime = "edge";
 
-export async function POST(req: Request, res: Response) {
+export async function POST(req: Request) {
 	try {
 		const pinecone = new Pinecone({
 			apiKey: process.env.NEXT_PINECONE_API_KEY!,
@@ -36,12 +40,17 @@ export async function POST(req: Request, res: Response) {
 			pinecone
 		);
 
-		const response = await openai.chat.completions.create({
+		const response = await openai.createChatCompletion({
 			model: "gpt-3.5-turbo",
 			stream: true,
 			messages: [
 				createOAIprompt(context),
-				...messages.filter((message: Message) => message.role === "user"),
+				...messages.filter(
+					(message: Message) =>
+						message.role === "user" &&
+						message.content !== undefined &&
+						message.content !== null
+				),
 			],
 		});
 

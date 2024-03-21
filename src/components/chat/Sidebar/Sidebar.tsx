@@ -12,10 +12,20 @@ import Tooltip from "@/components/ui/tooltip";
 type Props = {
 	chats: DrizzleChat[];
 	chatId: string;
+	currentChat:
+		| {
+				userId: string;
+				id: number;
+				fileName: string;
+				fileUrl: string;
+				fileKey: string;
+				createdAt: Date;
+		  }
+		| undefined;
 	isPro: boolean;
 };
 
-const Sidebar = ({ chats, chatId, isPro }: Props) => {
+const Sidebar = ({ chats, chatId, currentChat, isPro }: Props) => {
 	const tooltipMessage = isPro ? "Pro" : "Basic";
 
 	return (

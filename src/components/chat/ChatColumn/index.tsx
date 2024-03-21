@@ -11,11 +11,12 @@ type Props = { chatId: number };
 
 const Chat = ({ chatId }: Props) => {
 	//getting messages based on chatId
-	const { data, isLoading } = useQuery({
+	const { data, isLoading: isFetchingChat } = useQuery({
 		queryKey: ["chat", chatId],
 		queryFn: async () => {
 			const response = await axios.post<Message[]>("/api/get-chat", {
 				chatId,
+				messages,
 			});
 			return response.data;
 		},
@@ -26,7 +27,13 @@ const Chat = ({ chatId }: Props) => {
 	// and sending inital chat messages
 	// messages hisotry will be updated
 	// https://sdk.vercel.ai/docs/api-reference/use-chat#usechat
-	const { input, handleInputChange, handleSubmit, messages } = useChat({
+	const {
+		input,
+		handleInputChange,
+		handleSubmit,
+		messages,
+		isLoading: isStreaming,
+	} = useChat({
 		api: "/api/chat",
 		body: {
 			chatId,
@@ -53,7 +60,7 @@ const Chat = ({ chatId }: Props) => {
 				<h3 className="text-xl font-bold">Chat</h3>
 			</div>
 
-			<ChatMessageList messages={messages} isLoading={isLoading} />
+			<ChatMessageList messages={messages} isLoading={isFetchingChat} />
 
 			<Chatbar
 				handleSubmit={handleSubmit}

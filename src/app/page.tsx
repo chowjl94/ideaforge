@@ -18,7 +18,7 @@ export default async function Home() {
 
 	return (
 		<main className="min-h-screen w-screen bg-gradient-to-br from-sky-400 to-sky-200 p-4">
-			<div className="absolute top-0 right-0">
+			<div className="absolute top-0 right-0 p-4">
 				{isAuth && (
 					<div className="flex flex-row gap-10 border border-black rounded-md p-4 bg-white">
 						<Tooltip message={tooltipMessage}>
