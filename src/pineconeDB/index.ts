@@ -6,8 +6,8 @@ import { chunkifyPage, embedifyDocument } from "./embedding";
 import { convertToAscii } from "@/lib/utils";
 
 export async function loadS3IntoPinecone(filekey: string, pinecone: Pinecone) {
-	// obtain pdf from s3
 	try {
+		// obtain pdf from s3
 		const file_name = await downloadS3(filekey);
 		if (!file_name) {
 			throw new Error("Error with download from S3");

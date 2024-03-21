@@ -21,7 +21,7 @@ export default async function Home() {
 			<div className="absolute top-0 right-0 p-4">
 				{isAuth && (
 					<div className="flex flex-row gap-10 border border-black rounded-md p-4 bg-white">
-						<Tooltip message={tooltipMessage}>
+						<Tooltip message={tooltipMessage} position={"botton-10"}>
 							<div className="pt-1">{isPro ? <Gem /> : <Lightbulb />}</div>
 						</Tooltip>
 						<UserButton afterSignOutUrl="/"></UserButton>
