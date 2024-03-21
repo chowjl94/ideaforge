@@ -1,22 +1,33 @@
 "use client";
-import { Loader2 } from "lucide-react";
+
 import { useState } from "react";
+import { RefreshCw } from "lucide-react";
+import { Button as ShadButton } from "@/components/ui/button";
+import Tooltip from "@/components/ui/tooltip";
 
 type Props = { pdf_url: string };
 
 const PDFViewer = ({ pdf_url }: Props) => {
-	const [isLoading, setIsLoading] = useState(true);
-
-	const handleLoad = () => {
-		setIsLoading(false);
+	const [key, setKey] = useState(0);
+	const handleReload = () => {
+		setKey(key + 1); // Increment key to trigger component rerender
 	};
+	const tooltipMessage = "Refresh the PDF!";
 
 	return (
 		<>
+			<Tooltip message={tooltipMessage} position={"top-10"}>
+				<ShadButton
+					className="fixed z-99 border-white border "
+					onClick={handleReload}
+				>
+					<RefreshCw />
+				</ShadButton>
+			</Tooltip>
 			<iframe
+				key={key}
 				src={`https://docs.google.com/gview?url=${pdf_url}&embedded=true`}
 				className="w-full h-full"
-				onLoad={handleLoad}
 			></iframe>
 		</>
 	);
