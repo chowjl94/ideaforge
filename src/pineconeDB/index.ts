@@ -4,6 +4,9 @@ import { PDFLoader } from "langchain/document_loaders/fs/pdf";
 import { PDFDocument } from "@/lib/types/Types";
 import { chunkifyPage, embedifyDocument } from "./embedding";
 import { convertToAscii } from "@/lib/utils";
+// import { APIThrottler } from "./utils"; // Adjust the path as needed
+
+// const throttler = new APIThrottler(3);
 
 export async function loadS3IntoPinecone(filekey: string, pinecone: Pinecone) {
 	try {
@@ -23,7 +26,6 @@ export async function loadS3IntoPinecone(filekey: string, pinecone: Pinecone) {
 				return chunkifyPage(page); // Make sure chunkifyPage() returns PDFDocument
 			})
 		);
-
 		// vectorise and embed to save it into pineCone
 		const vectors = await Promise.all(
 			documents.flat().map((doc) => embedifyDocument(doc))
@@ -39,5 +41,6 @@ export async function loadS3IntoPinecone(filekey: string, pinecone: Pinecone) {
 		return documents[0];
 	} catch (error) {
 		console.log(error);
+		throw error;
 	}
 }

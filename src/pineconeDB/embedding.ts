@@ -20,6 +20,11 @@ export const getEmbeddings = async (text: string) => {
 			input: text.replace(/\n/g, " "),
 		});
 		const result = await response.json();
+		if (result.error && result.error.code === "rate_limit_exceeded") {
+			throw new Error(
+				"Rate limit exceeded for text-embedding-ada-002. Please try again later."
+			);
+		}
 		return result.data[0].embedding as number[];
 	} catch (error) {
 		console.log("error calling openai embeddings api", error);
@@ -29,7 +34,7 @@ export const getEmbeddings = async (text: string) => {
 
 export async function embedifyDocument(document: PDFDocument) {
 	try {
-		// converting page  contet into a vector
+		// converting page  content into a vector
 		const embeddings = await getEmbeddings(document.pageContent);
 		// hash the vector so we can id the vector
 		const hash = md5(document.pageContent);
@@ -43,7 +48,7 @@ export async function embedifyDocument(document: PDFDocument) {
 		} as PineconeRecord;
 	} catch (error) {
 		console.log("error embedding document", error);
-		throw error;
+		throw new Error("Unable to insert into PINECONEDB");
 	}
 }
 
@@ -55,6 +60,7 @@ export const contentStringByBytes = (str: string, bytes: number) => {
 // prepares a page into a document by converting string to bytes
 export async function chunkifyPage(page: PDFDocument) {
 	let { pageContent, metadata } = page;
+	// remove line breaks
 	pageContent = pageContent.replace(/\n/g, "");
 	// split the docs
 	const splitter = new RecursiveCharacterTextSplitter();
